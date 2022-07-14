@@ -13,7 +13,8 @@ namespace PointOfSaleSystem.Classes
 
     public class Inventory
     {
-        ConsoleTable invTable = new ConsoleTable("ID", "Name", "Units Available", "Category", "Description", "Unit Price");
+        public Cart ShoppingCart = new Cart();
+        ConsoleTable InvTable = new ConsoleTable("ID", "Name", "Units Available", "Category", "Description", "Unit Price");
         public List<Product> Products { get; set; }
 
         public Inventory()
@@ -31,17 +32,32 @@ namespace PointOfSaleSystem.Classes
 
         public void DrawInventoryTable()
         {
-            invTable.Rows.Clear();
+            InvTable.Rows.Clear();
+
+            Console.WriteLine("\n---STORE INVENTORY---");
 
             foreach (Product prod in Products)
-                invTable.AddRow(prod.ProductId, prod.Name, prod.QuantityAvailable, prod.FoodCat, prod.Description, string.Format("{0:C}", prod.UnitPrice));
+                InvTable.AddRow(prod.ProductId, prod.Name, prod.Quantity, prod.FoodCat, prod.Description, string.Format("{0:C}", prod.UnitPrice));
+            InvTable.Options.EnableCount = false;
 
-            invTable.Write(Format.Alternative);
+            InvTable.Write();
+
+            if (ShoppingCart.ItemsInCart.Count > 0)
+            {
+                ShoppingCart.DrawCartTable();
+            }
         }
 
         public void UpdateInventory(int prodId, int quantityDesired)
         {
-            Products[prodId - 1].QuantityAvailable -= quantityDesired;
+            Products[prodId - 1].Quantity -= quantityDesired;
+
+            ShoppingCart.AddItemToCart(Products[prodId - 1], quantityDesired);
+
+            if (Products[prodId - 1].Quantity == 0)
+                Products.RemoveAt(prodId - 1);
+
+            Console.Clear();
 
             DrawInventoryTable();
         }
