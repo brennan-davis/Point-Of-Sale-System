@@ -8,30 +8,21 @@ namespace PointOfSaleSystem.Classes
 {
     public class Product
     {
-        public int productId;
-        public string name;
-        public int quantityAvailable;
-        public string description;
-        public decimal unitPrice;
-        public FoodCategory foodCategory;
+        public int ProductId;
+        public string Name;
+        public int QuantityAvailable;
+        public string Description;
+        public decimal UnitPrice;
+        public FoodCategory FoodCat;
 
-        public enum FoodCategory
+        public Product(int productId, string name, FoodCategory foodCat, int quantityAvailable, string description, decimal unitPrice)
         {
-            Produce,
-            Frozen,
-            Meat,
-            Bread,
-            Canned
-        }
-
-        public Product(int ProductId, string Name, FoodCategory foodCat, int QuantityAvailable, string Description, decimal UnitPrice)
-        {
-            productId = ProductId;
-            name = Name;
-            foodCategory = foodCat;
-            quantityAvailable = QuantityAvailable;
-            description = Description;
-            unitPrice = UnitPrice;
+            ProductId = productId;
+            Name = name;
+            FoodCat = foodCat;
+            QuantityAvailable = quantityAvailable;
+            Description = description;
+            UnitPrice = unitPrice;
         }
     }
 }

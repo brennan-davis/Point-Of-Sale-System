@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PointOfSaleSystem.Classes
 {
-    internal class Cart
+    public class Cart
     {
 
     }
