@@ -37,7 +37,8 @@ namespace PointOfSaleSystem.Classes
             Console.WriteLine("\n---STORE INVENTORY---");
 
             foreach (Product prod in Products)
-                InvTable.AddRow(prod.ProductId, prod.Name, prod.Quantity, prod.FoodCat, prod.Description, string.Format("{0:C}", prod.UnitPrice));
+                if (prod.Quantity > 0)
+                    InvTable.AddRow(prod.ProductId, prod.Name, prod.Quantity, prod.FoodCat, prod.Description, string.Format("{0:C}", prod.UnitPrice));
             InvTable.Options.EnableCount = false;
 
             InvTable.Write();
@@ -53,9 +54,6 @@ namespace PointOfSaleSystem.Classes
             Products[prodId - 1].Quantity -= quantityDesired;
 
             ShoppingCart.AddItemToCart(Products[prodId - 1], quantityDesired);
-
-            if (Products[prodId - 1].Quantity == 0)
-                Products.RemoveAt(prodId - 1);
 
             Console.Clear();
 
