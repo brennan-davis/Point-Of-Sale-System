@@ -2,6 +2,6 @@
 
 Inventory inv = new Inventory();
 
-List<Product> inventory = inv.CreateInventory();
+inv.DrawInventoryTable();
 
-inv.DrawInventoryTable(inventory);
+inv.UpdateInventory(1, 9);
