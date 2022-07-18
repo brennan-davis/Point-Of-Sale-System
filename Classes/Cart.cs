@@ -19,30 +19,33 @@ namespace PointOfSaleSystem.Classes
 
         public void AddItemToCart(Product prod, int quantity)
         {
-            bool prodInCart = false;
-
-            foreach (var item in ItemsInCart)
+            if (quantity > 0)
             {
-                if(item.Name == prod.Name)
-                    prodInCart = true;
-                break;
-            }
+                bool prodInCart = false;
 
-            if (prodInCart)
-            {
                 foreach (var item in ItemsInCart)
                 {
                     if (item.Name == prod.Name)
-                    {
-                        item.Quantity += quantity;
-                        item.LinePrice = item.UnitPrice * item.Quantity;
-                    }
-
+                        prodInCart = true;
+                    break;
                 }
-            }
-            else
-            {
-                ItemsInCart.Add(new CartItem(prod.ProductId, prod.Name, quantity, prod.UnitPrice));
+
+                if (prodInCart)
+                {
+                    foreach (var item in ItemsInCart)
+                    {
+                        if (item.Name == prod.Name)
+                        {
+                            item.Quantity += quantity;
+                            item.LinePrice = item.UnitPrice * item.Quantity;
+                        }
+
+                    }
+                }
+                else
+                {
+                    ItemsInCart.Add(new CartItem(prod.ProductId, prod.Name, quantity, prod.UnitPrice));
+                }
             }
         }
 

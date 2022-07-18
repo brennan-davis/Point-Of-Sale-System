@@ -14,6 +14,7 @@ namespace PointOfSaleSystem.Classes
     public class Inventory
     {
         public Cart ShoppingCart = new Cart();
+        InputValidation iv = new InputValidation();
         ConsoleTable InvTable = new ConsoleTable("ID", "Name", "Units Available", "Category", "Description", "Unit Price");
         public List<Product> Products { get; set; }
 
@@ -57,9 +58,6 @@ namespace PointOfSaleSystem.Classes
 
             while (!isAvailableInQuantityDesired)
             {
-                input1 = 0;
-                input2 = 0;
-
                 if (Products[prodId - 1].Quantity > 0 && quantityDesired <= Products[prodId - 1].Quantity)
                 {
                     Products[prodId - 1].Quantity -= quantityDesired;
@@ -76,20 +74,10 @@ namespace PointOfSaleSystem.Classes
                 {
                     if (Products[prodId - 1].Quantity == 0)
                     {
-                        Console.WriteLine($"\nSorry, we have no {Products[prodId - 1].Name} available. Please select a new product you'd like to buy.");
-                        bool input1IsInt = int.TryParse(Console.ReadLine(), out input1);
-                        while (!input1IsInt)
-                        {
-                            Console.WriteLine("\nPlease input a valid item number:");
-                            input1IsInt = int.TryParse(Console.ReadLine(), out input1);
-                        }
-                        Console.WriteLine("Which how many unit of this item would you like to buy?");
-                        bool input2IsInt = int.TryParse(Console.ReadLine(), out input2);
-                        while (!input2IsInt)
-                        {
-                            Console.WriteLine("\nPlease input a valid item number:");
-                            input2IsInt = int.TryParse(Console.ReadLine(), out input2);
-                        }
+                        int input1 = iv.inputInInventoryRangeCheck(Products, $"\nSorry, we have no {Products[prodId - 1].Name} available. Please select a new product you'd like to buy.");
+                        
+                        int input2 = iv.intInputValidation("Which how many unit of this item would you like to buy?");
+                        
                         UpdateInventory(input1, input2);
                     }
                     else
@@ -99,23 +87,12 @@ namespace PointOfSaleSystem.Classes
                     while (!quantityDesiredIsInt || quantityDesired > Products[prodId - 1].Quantity)
                     {
                         if (!quantityDesiredIsInt)
-                        {
-                            Console.WriteLine($"\nPlease input a valid integer for quantity of {Products[prodId - 1].Name} desired:");
-                            quantityDesiredIsInt = int.TryParse(Console.ReadLine(), out quantityDesired);
-                        }
+                            quantityDesired = iv.intInputValidation($"\nPlease input a valid integer for quantity of {Products[prodId - 1].Name} desired:");
                         else
-                        {
-                            Console.WriteLine($"\nOnly {Products[prodId - 1].Quantity} {Products[prodId - 1].Name} are available.\nPlease input a new quantity you'd like to buy that falls into this range:");
-                            quantityDesiredIsInt = int.TryParse(Console.ReadLine(), out quantityDesired);
-                        }
+                            quantityDesired = iv.intInputValidation($"\nOnly {Products[prodId - 1].Quantity} {Products[prodId - 1].Name} are available.\nPlease input a new quantity you'd like to buy that falls into this range:");
                     }
                 }
             }
-
-            //if (input1 != 0 && input2 != 0)
-            //    UpdateInventory(input1, input2);
-
-
         }
     }
 }

@@ -21,9 +21,9 @@
             Console.WriteLine(message);
 
             bool inputIsInt = int.TryParse(Console.ReadLine(), out int input);
-            while (!inputIsInt || (input >= Products.Count || input <= 0))
+            while (!inputIsInt || (input > Products.Count || input <= 0))
             {
-                if (input >= Products.Count || input <= 0)
+                if (input > Products.Count || input <= 0)
                 {
                     Console.WriteLine($"\nYour input must be between 1 - {Products.Count}. Please try again:");
                     inputIsInt = int.TryParse(Console.ReadLine(), out input);
