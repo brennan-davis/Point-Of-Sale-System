@@ -30,9 +30,6 @@ namespace PointOfSaleSystem.Classes
             };
         }
 
-        int input1;
-        int input2;
-
         public void DrawInventoryTable()
         {
             InvTable.Rows.Clear();
