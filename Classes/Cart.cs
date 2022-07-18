@@ -19,7 +19,22 @@ namespace PointOfSaleSystem.Classes
 
         public void AddItemToCart(Product prod, int quantity)
         {
-            ItemsInCart.Add(new CartItem(prod.ProductId, prod.Name, quantity, prod.UnitPrice));
+            if (ItemsInCart.Count > 0)
+            {
+                foreach (var item in ItemsInCart)
+                {
+                    if (item.Name == prod.Name)
+                    {
+                        item.Quantity += quantity;
+                        item.LinePrice = item.UnitPrice * item.Quantity;
+                    }
+
+                }
+            }
+            else
+            {
+                ItemsInCart.Add(new CartItem(prod.ProductId, prod.Name, quantity, prod.UnitPrice));
+            }
         }
 
         public void DrawCartTable()
@@ -34,6 +49,11 @@ namespace PointOfSaleSystem.Classes
             CartTable.Options.EnableCount = false;
 
             CartTable.Write(Format.Alternative);
+        }
+
+        decimal GetCartTotal()
+        {
+            return ItemsInCart.Select(p => p.Quantity * p.UnitPrice).Sum();
         }
     }
 }

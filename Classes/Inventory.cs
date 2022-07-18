@@ -29,6 +29,8 @@ namespace PointOfSaleSystem.Classes
             };
         }
 
+        int input1;
+        int input2;
 
         public void DrawInventoryTable()
         {
@@ -51,13 +53,69 @@ namespace PointOfSaleSystem.Classes
 
         public void UpdateInventory(int prodId, int quantityDesired)
         {
-            Products[prodId - 1].Quantity -= quantityDesired;
+            bool isAvailableInQuantityDesired = false;
 
-            ShoppingCart.AddItemToCart(Products[prodId - 1], quantityDesired);
+            while (!isAvailableInQuantityDesired)
+            {
+                input1 = 0;
+                input2 = 0;
 
-            Console.Clear();
+                if (Products[prodId - 1].Quantity > 0 && quantityDesired <= Products[prodId - 1].Quantity)
+                {
+                    Products[prodId - 1].Quantity -= quantityDesired;
 
-            DrawInventoryTable();
+                    ShoppingCart.AddItemToCart(Products[prodId - 1], quantityDesired);
+
+                    isAvailableInQuantityDesired = true;
+
+                    Console.Clear();
+
+                    DrawInventoryTable();
+                }
+                else
+                {
+                    if (Products[prodId - 1].Quantity == 0)
+                    {
+                        Console.WriteLine($"\nSorry, we have no {Products[prodId - 1].Name} available. Please select a new product you'd like to buy.");
+                        bool input1IsInt = int.TryParse(Console.ReadLine(), out input1);
+                        while (!input1IsInt)
+                        {
+                            Console.WriteLine("\nPlease input a valid item number:");
+                            input1IsInt = int.TryParse(Console.ReadLine(), out input1);
+                        }
+                        Console.WriteLine("Which how many unit of this item would you like to buy?");
+                        bool input2IsInt = int.TryParse(Console.ReadLine(), out input2);
+                        while (!input2IsInt)
+                        {
+                            Console.WriteLine("\nPlease input a valid item number:");
+                            input2IsInt = int.TryParse(Console.ReadLine(), out input2);
+                        }
+                        UpdateInventory(input1, input2);
+                    }
+                    else
+                        Console.WriteLine($"\nSorry, we only have {Products[prodId - 1].Quantity} {Products[prodId - 1].Name} available.\nPlease input a new quantity you'd like to buy:");
+
+                    bool quantityDesiredIsInt = int.TryParse(Console.ReadLine(), out quantityDesired);
+                    while (!quantityDesiredIsInt || quantityDesired > Products[prodId - 1].Quantity)
+                    {
+                        if (!quantityDesiredIsInt)
+                        {
+                            Console.WriteLine($"\nPlease input a valid integer for quantity of {Products[prodId - 1].Name} desired:");
+                            quantityDesiredIsInt = int.TryParse(Console.ReadLine(), out quantityDesired);
+                        }
+                        else
+                        {
+                            Console.WriteLine($"\nOnly {Products[prodId - 1].Quantity} {Products[prodId - 1].Name} are available.\nPlease input a new quantity you'd like to buy that falls into this range:");
+                            quantityDesiredIsInt = int.TryParse(Console.ReadLine(), out quantityDesired);
+                        }
+                    }
+                }
+            }
+
+            //if (input1 != 0 && input2 != 0)
+            //    UpdateInventory(input1, input2);
+
+
         }
     }
 }
