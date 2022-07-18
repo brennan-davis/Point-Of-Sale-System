@@ -19,7 +19,16 @@ namespace PointOfSaleSystem.Classes
 
         public void AddItemToCart(Product prod, int quantity)
         {
-            if (ItemsInCart.Count > 0)
+            bool prodInCart = false;
+
+            foreach (var item in ItemsInCart)
+            {
+                if(item.Name == prod.Name)
+                    prodInCart = true;
+                break;
+            }
+
+            if (prodInCart)
             {
                 foreach (var item in ItemsInCart)
                 {
