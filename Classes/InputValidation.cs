@@ -9,7 +9,7 @@
             bool inputIsInt = int.TryParse(Console.ReadLine(), out int input);
             while (!inputIsInt)
             {
-                Console.WriteLine("\nPlease input a valid item number:");
+                Console.WriteLine("\nPlease input a valid integer:");
                 inputIsInt = int.TryParse(Console.ReadLine(), out input);
             }
 
